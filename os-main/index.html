@@ -1,285 +1,139 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-  <meta charset="UTF-8">
-  <title>Banker's Algorithm Simulator</title>
-  <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-      font-family: 'Poppins', sans-serif;
-    }
+    <title>Home</title>
+    <style>
+        html, body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+            font-family: 'Courier New', monospace;
+            background-image: url("oslogo.jpg");
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            color: #fff;
 
-    body {
-      background: linear-gradient(135deg, #f3e7e9 0%, #e3eeff 100%);
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      min-height: 100vh;
-      padding: 30px;
-    }
+            /* Flexbox Centering */
+            display: flex;
+            flex-direction: column;
+        }
 
-    .container {
-      background: rgba(255, 255, 255, 0.9);
-      backdrop-filter: blur(8px);
-      border-radius: 20px;
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
-      padding: 40px;
-      max-width: 900px;
-      width: 100%;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-    }
+        .terminal-header {
+            background: #2d2d2d;
+            padding: 10px 20px;
+            border-top-left-radius: 10px;
+            border-top-right-radius: 10px;
+            display: flex;
+            align-items: center;
+        }
 
-    h2 {
-      color: #4a148c;
-      font-size: 28px;
-      margin-bottom: 20px;
-    }
+        .dot {
+            height: 12px;
+            width: 12px;
+            border-radius: 50%;
+            display: inline-block;
+            margin-right: 5px;
+        }
 
-    .form-row {
-      display: flex;
-      gap: 20px;
-      align-items: center;
-      flex-wrap: wrap;
-      justify-content: center;
-      margin-bottom: 20px;
-    }
+        .red { background-color: #ff5f56; }
+        .yellow { background-color: #ffbd2e; }
+        .green { background-color: #27c93f; }
 
-    label {
-      font-weight: bold;
-      color: #333;
-    }
+        .terminal-title {
+            color: white;
+            font-weight: bold;
+            margin-left: 10px;
+        }
 
-    input[type="number"], input[type="text"] {
-      padding: 10px;
-      font-size: 16px;
-      border-radius: 8px;
-      border: 1.5px solid #bbb;
-      width: 200px;
-      text-align: center;
-      transition: 0.3s;
-       row-gap: 20px;
+        .main-content {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
 
-    }
+        .container {
+            background-color: rgba(0, 0, 0, 0.7);
+            padding: 30px;
+            border-radius: 10px;
+            max-width: 800px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
+            text-align: center;
+        }
 
-    input[type="number"]:focus, input[type="text"]:focus {
-      border-color: #6a1b9a;
-      outline: none;
-      transform: scale(1.05);
-    }
+        .typewriter {
+            font-size: 24px;
+            font-weight: bold;
+            white-space: nowrap;
+            overflow: hidden;
+            border-right: 2px solid orange;
+            width: 100%;
+            animation: typing 4s steps(40, end), blink-caret 0.75s step-end infinite;
+            color: #00ffea;
+            text-align: center;
+            margin-bottom: 20px;
+        }
 
-    button {
-      background: #6a1b9a;
-      color: white;
-      border: none;
-      padding: 12px 24px;
-      font-size: 16px;
-      border-radius: 12px;
-      cursor: pointer;
-      transition: 0.3s ease;
-    }
+        @keyframes typing {
+            from { width: 0 }
+            to { width: 100% }
+        }
 
-    button:hover {
-      background: #7b1fa2;
-      transform: translateY(-3px);
-    }
+        @keyframes blink-caret {
+            from, to { border-color: transparent }
+            50% { border-color: orange; }
+        }
 
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      margin-top: 20px;
-      border-radius: 10px;
-      overflow: hidden;
-      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-    }
+        p {
+            font-size: 16px;
+            line-height: 1.6;
+        }
 
-    th {
-      background: #7b1fa2;
-      color: white;
-      padding: 12px;
-    }
+        .footer {
+            text-align: center;
+            margin-top: 10px;
+            font-size: 14px;
+            color: #ccc;
+            font-weight: bold;
+        }
 
-    td {
-      padding: 10px;
-      text-align: center;
-      border-bottom: 1px solid #ddd;
-    }
+        .button-container {
+            text-align: center;
+            margin-top: 30px;
+        }
 
-    input.table-input {
-      width: 60px;
-      padding: 6px;
-      border-radius: 6px;
-      border: 1px solid #ccc;
-      text-align: center;
-      transition: 0.3s;
-    }
+        .button-container a {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #4285F4;
+            color: #fff;
+            text-decoration: none;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
 
-    input.table-input:focus {
-      border-color: #6a1b9a;
-      transform: scale(1.05);
-    }
-
-    .result-section {
-      margin-top: 30px;
-      padding: 20px;
-      border-left: 5px solid #6a1b9a;
-      background: #f3f0fa;
-      border-radius: 10px;
-      font-size: 16px;
-      transition: 0.3s;
-    }
-
-    .ok {
-      color: green;
-      font-weight: bold;
-    }
-
-    .fail {
-      color: red;
-      font-weight: bold;
-    }
-    .input-row {
-  display: flex;
-  justify-content: center;
-  gap: 1rem; /* Space between input groups */
-  margin-bottom: 1rem;
-}
-
-.input-group {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-}
-
-.button-row {
-  display: flex;
-  justify-content: center;
-  margin-bottom: 2rem;
-}
-
-  </style>
+        .button-container a:hover {
+            background-color: #357ae8;
+        }
+    </style>
 </head>
 <body>
-  <div class="container">
-    <h2>Banker's Algorithm Simulator</h2>
+    <div class="terminal-header">
+        <span class="dot red"></span>
+        <span class="dot yellow"></span>
+        <span class="dot green"></span>
+        <span class="terminal-title">Deadlock free Resource Allocator</span>
+    </div>
 
-   <div class="form-row" style="flex-direction: column; align-items: flex-start;">
-  <div class="input-group">
-    <label for="processCount">Number of Processes:</label>
-    <input type="number" id="processCount">
-  </div>
-  <div class="input-group">
-    <label for="resourceCount">Number of Resource Types:</label>
-    <input type="number" id="resourceCount">
-  </div>
-  <div class="input-group">
-    <button onclick="buildMatrices()">Generate table</button>
-  </div>
-</div>
-
-
-    <div id="matrixInputs"></div>
-  </div>
-
-  <script>
-    function buildMatrices() {
-      const p = +document.getElementById('processCount').value;
-      const r = +document.getElementById('resourceCount').value;
-      const container = document.getElementById('matrixInputs');
-      container.innerHTML = '';
-
-      let html = `<table>
-        <tr><th>Process</th>`;
-      for (let j = 0; j < r; j++) html += `<th>Max R${j}</th>`;
-      for (let j = 0; j < r; j++) html += `<th>Alloc R${j}</th>`;
-      html += `</tr>`;
-
-      for (let i = 0; i < p; i++) {
-        html += `<tr><td>P${i}</td>`;
-        for (let j = 0; j < r * 2; j++) {
-          html += `<td><input type="number" class="table-input" id="cell-${i}-${j}" min="0" value="0"></td>`;
-        }
-        html += `</tr>`;
-      }
-      html += `</table><br>`;
-
-      html += `
-        <label>Total Instances of Each Resource (comma-separated):</label><br>
-        <input type="text" id="totalInstances" placeholder="e.g. 10,5,7" value="${Array(r).fill(0).join(',')}">
-        <br><br>
-        <button onclick="runBanker()">Calculate Need MAtrix and Safe sequence</button>
-        <div id="output" class="result-section"></div>
-      `;
-
-      container.innerHTML = html;
-    }
-
-    function runBanker() {
-      const p = +document.getElementById('processCount').value;
-      const r = +document.getElementById('resourceCount').value;
-      const total = document.getElementById('totalInstances').value
-        .split(',').map(x => +x.trim());
-
-      const max = [], alloc = [];
-      for (let i = 0; i < p; i++) {
-        max[i] = [];
-        alloc[i] = [];
-        for (let j = 0; j < r; j++) max[i].push(+document.getElementById(`cell-${i}-${j}`).value || 0);
-        for (let j = 0; j < r; j++) alloc[i].push(+document.getElementById(`cell-${i}-${j + r}`).value || 0);
-      }
-
-      const avail = total.map((T, j) => {
-        let sum = 0;
-        for (let i = 0; i < p; i++) sum += alloc[i][j];
-        return T - sum;
-      });
-
-      const need = max.map((row, i) =>
-        row.map((m, j) => m - alloc[i][j])
-      );
-
-      const finish = Array(p).fill(false),
-            work = avail.slice(),
-            safeSeq = [];
-
-      let progress;
-      do {
-        progress = false;
-        for (let i = 0; i < p; i++) {
-          if (!finish[i] && need[i].every((n, j) => n <= work[j])) {
-            for (let j = 0; j < r; j++) work[j] += alloc[i][j];
-            finish[i] = true;
-            safeSeq.push(`P${i}`);
-            progress = true;
-          }
-        }
-      } while (progress);
-
-      const out = document.getElementById('output');
-      out.innerHTML = '';
-
-      out.innerHTML += `<strong>Available Resources:</strong> [ ${avail.join(', ')} ]<br><br>`;
-
-      let tbl = '<strong>Need Matrix</strong><br><table><tr>';
-      for (let j = 0; j < r; j++) tbl += `<th>R${j}</th>`;
-      tbl += '</tr>';
-      for (let i = 0; i < p; i++) {
-        tbl += '<tr>';
-        need[i].forEach(v => tbl += `<td>${v}</td>`);
-        tbl += '</tr>';
-      }
-      tbl += '</table><br>';
-      out.innerHTML += tbl;
-
-      if (finish.every(x => x)) {
-        out.innerHTML += `<div class="ok">Safe Sequence: ${safeSeq.join(' ➜ ')}</div>`;
-      } else {
-        out.innerHTML += `<div class="fail">Unsafe State: No safe sequence found.</div>`;
-      }
-    }
-  </script>
+    <div class="main-content">
+        <div class="container">
+            <div class="typewriter">WELCOME TO BANKER'S ALGORITHM</div>
+            <p>The Banker's Algorithm is a resource allocation and deadlock avoidance algorithm developed by Edsger Dijkstra. It is used in operating systems to allocate resources to processes in a way that avoids deadlocks. The algorithm is called the "Banker's Algorithm" because it simulates the allocation of resources by a banker who only allocates resources if it is safe to do so, similar to how a banker allocates money to clients.</p>
+            <div class="button-container">
+                <a href="sam.html">Click here to know how it works</a>
+            </div>
+        </div>
+    </div>
 </body>
 </html>
